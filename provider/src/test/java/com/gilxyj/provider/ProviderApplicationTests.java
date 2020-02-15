@@ -10,4 +10,17 @@ class ProviderApplicationTests {
     void contextLoads() {
     }
 
+    @Test
+    public void test(){
+        Double t1=243.60;
+        Double t2=596.40;
+
+        Double s=t1+t2;
+        System.out.println(s);
+
+
+
+
+    }
+
 }
