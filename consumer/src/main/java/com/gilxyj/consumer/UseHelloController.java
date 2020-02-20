@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -209,5 +210,15 @@ public class UseHelloController {
         user.setPassword("123|");
         user.setId(456);
         restTemplateTwo.put("http://provider/user2", user);
+    }
+
+    @GetMapping("/delUser1")
+    public void deleteUser1(){
+        restTemplateTwo.delete("http://provider/user1?id={1}", 9999);
+    }
+
+    @GetMapping("/delUser2")
+    public void deleteUser2(){
+        restTemplateTwo.delete("http://provider/user2/{1}",222);
     }
 }

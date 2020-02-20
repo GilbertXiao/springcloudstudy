@@ -46,8 +46,13 @@ public class HelloController {
         System.out.println(user);
     }
 
-    @DeleteMapping("/deleteHello")
-    public String deleteHello(String name){
-        return "deleteHello"+name;
+    @DeleteMapping("/user1")
+    public void deleteUser1(Integer id){
+        System.out.println(id);
+    }
+
+    @DeleteMapping("/user2/{id}")
+    public void deleteUser2(@PathVariable Integer id){
+        System.out.println(id);
     }
 }
