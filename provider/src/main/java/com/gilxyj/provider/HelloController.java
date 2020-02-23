@@ -4,6 +4,8 @@ import com.gilxyj.commons.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 /**
  * @program: springcloudstudy
  * @description:
@@ -23,6 +25,7 @@ public class HelloController {
 
     @GetMapping("/getHello")
     public String getHello(String name){
+        System.out.println(new Date()+":"+name);
         return "getHello"+name;
     }
 
