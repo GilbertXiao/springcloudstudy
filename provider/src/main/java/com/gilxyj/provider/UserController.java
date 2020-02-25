@@ -19,6 +19,7 @@ public class UserController {
 
     @GetMapping("/user/{ids}")//假设consumer传过来的多个id的格式是1,2,3,4...
     public List<User> getUserbyIds(@PathVariable String ids){
+        System.out.println(ids);
         String[] split = ids.split(",");
         List<User> list=new ArrayList<>();
         for (String s : split) {

@@ -1,5 +1,6 @@
 package com.gilxyj.hystrix;
 
+import com.gilxyj.commons.User;
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.strategy.concurrency.HystrixRequestContext;
@@ -78,5 +79,60 @@ public class HelloController {
         //由于缓存数据被删除，所以重新向provider请求数据
         String s2 = helloService.hello3("gilxyj");
         hystrixRequestContext.close();
+    }
+
+    @Autowired
+    UserService userService;
+
+    @GetMapping("/hello5")
+    public void hello5() throws ExecutionException, InterruptedException {
+        HystrixRequestContext hystrixRequestContext = HystrixRequestContext.initializeContext();
+        UserCollapseCommand userCollapseCommand1 = new UserCollapseCommand(userService, 99);
+        UserCollapseCommand userCollapseCommand2 = new UserCollapseCommand(userService, 98);
+        UserCollapseCommand userCollapseCommand3 = new UserCollapseCommand(userService, 97);
+        UserCollapseCommand userCollapseCommand4 = new UserCollapseCommand(userService, 96);
+
+        Future<User> queue1 = userCollapseCommand1.queue();
+        Future<User> queue2 = userCollapseCommand2.queue();
+        Future<User> queue3 = userCollapseCommand3.queue();
+        Future<User> queue4 = userCollapseCommand4.queue();
+
+        User user1 = queue1.get();
+        User user2 = queue2.get();
+        User user3 = queue3.get();
+        User user4 = queue4.get();
+
+        Thread.sleep(2000);
+
+        UserCollapseCommand userCollapseCommand5 = new UserCollapseCommand(userService, 95);
+        Future<User> queue5 = userCollapseCommand5.queue();
+        User user5 = queue5.get();
+        System.out.println(user1);
+        System.out.println(user2);
+        System.out.println(user3);
+        System.out.println(user4);
+        System.out.println(user5);
+        hystrixRequestContext.close();
+    }
+
+    @GetMapping("/hello6")
+    public void hello6() throws ExecutionException, InterruptedException {
+        HystrixRequestContext hystrixRequestContext = HystrixRequestContext.initializeContext();
+        Future<User> queue1 = userService.getUserById(99);
+        Future<User> queue2 = userService.getUserById(98);
+        Future<User> queue3 = userService.getUserById(97);
+        Future<User> queue4 = userService.getUserById(96);
+
+        User user1 = queue1.get();
+        User user2 = queue2.get();
+        User user3 = queue3.get();
+        User user4 = queue4.get();
+
+        System.out.println(user1);
+        System.out.println(user2);
+        System.out.println(user3);
+        System.out.println(user4);
+        hystrixRequestContext.close();
+
     }
 }
