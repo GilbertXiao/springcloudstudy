@@ -1,9 +1,13 @@
 package com.gilxyj.provider;
 
+import com.gilxyj.api.IUserService;
 import com.gilxyj.commons.User;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Date;
 
 /**
@@ -13,18 +17,23 @@ import java.util.Date;
  * @create: 2020-02-09 22:07
  **/
 @RestController
-public class HelloController {
+public class HelloController implements IUserService {
 
     @Value("${server.port}")
     Integer port;
 
-    @GetMapping("/hello")
+    @PutMapping("/user1")
+    public void updateUser1(User user){
+        System.out.println(user);
+    }
+
+    @Override
     public String hello(){
         return "hello javaboy:"+port;
     }
 
-    @GetMapping("/getHello")
-    public String getHello(String name){
+    @Override
+    public String hello2(String name){
         System.out.println(new Date()+":"+name);
         return "getHello"+name;
     }
@@ -34,14 +43,9 @@ public class HelloController {
         return user;
     }
 
-    @PostMapping("/user2")
+    @Override
     public User addUser2(@RequestBody User user){
         return user;
-    }
-
-    @PutMapping("/user1")
-    public void updateUser1(User user){
-        System.out.println(user);
     }
 
     @PutMapping("/user2")
@@ -54,8 +58,13 @@ public class HelloController {
         System.out.println(id);
     }
 
-    @DeleteMapping("/user2/{id}")
+    @Override
     public void deleteUser2(@PathVariable Integer id){
         System.out.println(id);
+    }
+
+    @Override
+    public void getUserByName(@RequestHeader String name) throws UnsupportedEncodingException {
+        System.out.println(URLDecoder.decode(name,"UTF-8"));
     }
 }
