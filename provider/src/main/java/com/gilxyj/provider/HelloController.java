@@ -2,8 +2,8 @@ package com.gilxyj.provider;
 
 import com.gilxyj.api.IUserService;
 import com.gilxyj.commons.User;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
@@ -28,11 +28,10 @@ public class HelloController implements IUserService {
     }
 
     @Override
+    @RateLimiter(name = "rlA")
     public String hello(){
-
         String s = "hello javaboy:" + port;
-        System.out.println(s);
-        int i = 1 / 0;
+        System.out.println("---->"+new Date());
         return s;
     }
 
